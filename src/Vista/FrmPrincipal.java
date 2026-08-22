@@ -67,6 +67,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Baskerville Old Face", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 102));
         jButton2.setText("Clientes");
