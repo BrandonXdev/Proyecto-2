@@ -102,21 +102,28 @@ public class Contrato {
         }
     }
     
-    public void activar() {
-        if (estado == EstadoContrato.PENDIENTE) {
-            estado = EstadoContrato.ACTIVO;
+    public void activar() throws CambioEstadoException {
+        if (estado != EstadoContrato.PENDIENTE) {
+            throw new CambioEstadoException("Solo se pueden activar contratos pendientes");
             }
+        estado = EstadoContrato.ACTIVO;
         }
     
-    public void finalizar() {
-        if (estado == EstadoContrato.ACTIVO) {
-            estado = EstadoContrato.FINALIZADO;
+    public void finalizar() throws CambioEstadoException {
+        if (estado != EstadoContrato.ACTIVO) {
+             throw new CambioEstadoException("Solo se pueden finalizar contratos activos");
             }
+        estado = EstadoContrato.FINALIZADO;
+        
         }
     
-    public void cancelar() {
-        if (estado == EstadoContrato.PENDIENTE) {
-            estado = EstadoContrato.CANCELADO;
-            }   
+    public void cancelar() throws CambioEstadoException {
+        if (estado != EstadoContrato.PENDIENTE) {
+             throw new CambioEstadoException("Solo se pueden cancelar contratos pendientes");
+            }
+        estado = EstadoContrato.CANCELADO;
         }
+
+    
+    
 }
