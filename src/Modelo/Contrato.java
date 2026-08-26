@@ -123,6 +123,25 @@ public class Contrato {
             }
         estado = EstadoContrato.CANCELADO;
         }
+    
+    public double calcularTotal(){
+        double total = espacio.getPrecioXMes() * calcularPeriodos();
+        
+        for(Servicio servicio : servicios){
+            total += servicio.getPrecio();
+        }
+        return total;
+    }
+    
+    public double calcularImpuesto(){
+        double total = calcularTotal();
+        
+        return total - total/ 1.13;
+    }
+    
+    public double calcularSubtotal(){
+        return calcularTotal() - calcularImpuesto();
+    }
 
     
     
