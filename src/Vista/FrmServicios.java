@@ -66,7 +66,7 @@ public class FrmServicios extends javax.swing.JFrame {
         jButton2.setText("Agregar");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        jButton3.setBackground(new java.awt.Color(0, 0, 153));
+        jButton3.setBackground(java.awt.Color.blue);
         jButton3.setForeground(new java.awt.Color(0, 0, 0));
         jButton3.setText("Actualizar");
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
