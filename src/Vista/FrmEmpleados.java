@@ -81,8 +81,9 @@ public class FrmEmpleados extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton4.setBackground(new java.awt.Color(0, 0, 153));
+        jButton4.setBackground(java.awt.Color.blue);
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Actualizar-Photoroom.png"))); // NOI18N
         jButton4.setText("Actualizar");
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 

@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import Controlador.Controlador;
+
 /**
  *
  * @author brand
@@ -12,11 +14,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmPrincipal.class.getName());
 
-    /**
-     * Creates new form FrmPrincipal
-     */
+    private Controlador controlador;
+    
     public FrmPrincipal() {
         initComponents();
+        this.controlador = new Controlador();
     }
 
     /**
@@ -54,10 +56,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         jPanelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Baskerville Old Face", 1, 24)); // NOI18N
-        jButton6.setText("Salir");
+        jButton6.setForeground(new java.awt.Color(0, 0, 153));
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Salirl-Photoroom.png"))); // NOI18N
+        jButton6.setBorderPainted(false);
+        jButton6.setContentAreaFilled(false);
         jButton6.addActionListener(this::jButton6ActionPerformed);
-        jPanelPrincipal.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 730, -1, -1));
+        jPanelPrincipal.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 700, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 70)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -199,6 +205,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jPanelPrincipal.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 760, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Designer.png"))); // NOI18N
+        jLabel1.setText("Salir");
         jPanelPrincipal.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, 780));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
