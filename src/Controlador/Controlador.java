@@ -100,5 +100,20 @@ public class Controlador {
     public GestorContratos getContratos() {
         return contratos;
     }
+    
+    //Espacios: 
+    public boolean agregarEspacio(Espacio espacio) {
+        return espacios.add(espacio);
+    }
+    public Espacio buscarEspacio(int numeroEspacio) {
+        return espacios.get(numeroEspacio);
+    }
+    public boolean eliminarEspacio(int numeroEspacio) {
+        return espacios.remove(numeroEspacio);
+    }
+    public EspaciosList getEspacios() {
+        return espacios;
+    }
+    
 
 }
