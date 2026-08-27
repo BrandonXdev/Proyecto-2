@@ -4,6 +4,13 @@
  */
 package Vista;
 
+import Controlador.Controlador;
+import Modelo.Empleado;
+import Modelo.Servicio;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author brand
@@ -12,11 +19,10 @@ public class FrmEmpleados extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmEmpleados.class.getName());
 
-    /**
-     * Creates new form FrmEmpleados
-     */
-    public FrmEmpleados() {
+    private Controlador controlador;
+    public FrmEmpleados(Controlador controlador) {
         initComponents();
+        this.controlador = controlador;  
     }
 
     /**
@@ -30,17 +36,15 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cbxPuesto = new javax.swing.JComboBox<>();
+        btnBuscar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        tblEmpleados = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,23 +56,25 @@ public class FrmEmpleados extends javax.swing.JFrame {
         jLabel1.setText("Gestión de empleados");
         jLabel1.setOpaque(true);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Recepcionista", "Encargado de bodega", "Mantenimiento", "Operario de carga" }));
+        cbxPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "RECEPCIONISTA", "ENCARGADO_BODEGA", "MANTENIMIENTO", "OPERARIO_CARGA" }));
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 0));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Buscar-Photoroom.png"))); // NOI18N
-        jButton1.setText("Buscar");
+        btnBuscar.setBackground(new java.awt.Color(255, 204, 0));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Buscar-Photoroom.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 0));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Agregar.png"))); // NOI18N
-        jButton2.setText("Agregar");
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar.setBackground(new java.awt.Color(255, 204, 0));
+        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Agregar.png"))); // NOI18N
+        btnAgregar.setText("Agregar");
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 153));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblEmpleados.setBackground(new java.awt.Color(255, 255, 255));
+        tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -79,32 +85,27 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 "Identificación", "Nombre", "Teléfono", "Puesto", "Salario"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblEmpleados);
 
-        jButton4.setBackground(java.awt.Color.blue);
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Actualizar-Photoroom.png"))); // NOI18N
-        jButton4.setText("Actualizar");
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnActualizar.setBackground(java.awt.Color.blue);
+        btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Actualizar-Photoroom.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
-        jButton5.setBackground(java.awt.Color.red);
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eliminar.png"))); // NOI18N
-        jButton5.setText("Eliminar");
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-
-        jButton6.setBackground(new java.awt.Color(255, 204, 0));
-        jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Aceptar");
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEliminar.setBackground(java.awt.Color.red);
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eliminar.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         jButton7.setBackground(java.awt.Color.red);
         jButton7.setForeground(new java.awt.Color(0, 0, 0));
-        jButton7.setText("Cancelar");
+        jButton7.setText("Volver");
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-
-        jSeparator2.setBackground(new java.awt.Color(0, 0, 102));
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jButton7.addActionListener(this::jButton7ActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -116,27 +117,22 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)
+                        .addComponent(btnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton5)
+                        .addComponent(btnEliminar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbxPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(15, 15, 15))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton7)))))
+                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -145,23 +141,20 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+                .addGap(17, 17, 17)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,9 +171,70 @@ public class FrmEmpleados extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+
+        int fila = tblEmpleados.getSelectedRow();
+
+        String identificacion = tblEmpleados.getValueAt(fila, 0).toString();
+
+        controlador.eliminarEmpleado(identificacion);
+
+        cargarEmpleados();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        int fila = tblEmpleados.getSelectedRow();
+
+        String identificacion = tblEmpleados.getValueAt(fila, 0).toString();
+
+        Empleado empleado = controlador.buscarEmpleado(identificacion);
+
+        DlgEmpleados dlg = new DlgEmpleados(this, true, controlador);
+
+        dlg.cargarEmpleado(empleado);
+
+        dlg.setVisible(true);
+
+        cargarEmpleados();
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        DlgEmpleados dlg = new DlgEmpleados(this, true, controlador);
+        dlg.setVisible(true);
+
+        cargarEmpleados();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        String puestoSeleccionado = cbxPuesto.getSelectedItem().toString(); // arreglar
+
+        JOptionPane.showMessageDialog(this, "Puesto seleccionado: " + puestoSeleccionado);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+     private void cargarEmpleados() {
+        
+        DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+        modelo.setRowCount(0);
+        
+        Iterator empleados = controlador.getEmpleados().getAll();
+   
+        while (empleados.hasNext()) {
+            Empleado empleado = (Empleado) empleados.next();
+
+            modelo.addRow(new Object[]{
+            empleado.getIdentificacion(),
+            empleado.getNombre(),
+            empleado.getTelefono(),
+            empleado.getPuesto(),
+            empleado.getSalario()
+        });
+    }
+}
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -200,22 +254,20 @@ public class FrmEmpleados extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmEmpleados().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new FrmEmpleados().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JComboBox<String> cbxPuesto;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblEmpleados;
     // End of variables declaration//GEN-END:variables
 }

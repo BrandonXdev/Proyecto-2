@@ -4,6 +4,10 @@
  */
 package Vista;
 
+import Controlador.Controlador;
+import Modelo.Empleado;
+import Modelo.PuestoEmpleado;
+
 /**
  *
  * @author brand
@@ -12,12 +16,13 @@ public class DlgEmpleados extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgEmpleados.class.getName());
 
-    /**
-     * Creates new form DlgEmpleados
-     */
-    public DlgEmpleados(java.awt.Frame parent, boolean modal) {
+    private Controlador controlador;
+    private Empleado empleadoActual;
+
+    public DlgEmpleados(java.awt.Frame parent, boolean modal, Controlador controlador) {
         super(parent, modal);
         initComponents();
+        this.controlador = controlador;
     }
 
     /**
@@ -32,18 +37,18 @@ public class DlgEmpleados extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtIdentificacion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton5 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtSalario = new javax.swing.JTextField();
+        cbxPuesto = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -60,36 +65,34 @@ public class DlgEmpleados extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setText("Identificación");
 
-        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
+        txtIdentificacion.setBackground(new java.awt.Color(204, 204, 204));
+        txtIdentificacion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));
         jLabel3.setText("Nombre");
 
-        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
+        txtNombre.setBackground(new java.awt.Color(204, 204, 204));
+        txtNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel4.setText("Descripción");
+        jLabel4.setText("Teléfono");
 
-        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
+        txtTelefono.setBackground(new java.awt.Color(204, 204, 204));
+        txtTelefono.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setText("Puesto");
 
-        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
-
         jSeparator1.setBackground(new java.awt.Color(0, 0, 153));
 
-        jButton5.setBackground(new java.awt.Color(255, 204, 0));
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Guardar");
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnGuardar.setBackground(new java.awt.Color(255, 204, 0));
+        btnGuardar.setForeground(new java.awt.Color(0, 0, 0));
+        btnGuardar.setText("Guardar");
+        btnGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         jButton6.setBackground(java.awt.Color.red);
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
@@ -100,9 +103,12 @@ public class DlgEmpleados extends javax.swing.JDialog {
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setText("Salario");
 
-        jTextField5.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
-        jTextField5.setEnabled(false);
+        txtSalario.setBackground(new java.awt.Color(204, 204, 204));
+        txtSalario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 153)));
+        txtSalario.setEnabled(false);
+
+        cbxPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "RECEPCIONISTA", "ENCARGADO_BODEGA", "MANTENIMIENTO", "OPERARIO_CARGA" }));
+        cbxPuesto.addActionListener(this::cbxPuestoActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -112,15 +118,15 @@ public class DlgEmpleados extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField2)
+                    .addComponent(txtIdentificacion)
+                    .addComponent(txtTelefono)
+                    .addComponent(txtNombre)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton5)
+                        .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton6))
+                    .addComponent(txtSalario, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -128,9 +134,9 @@ public class DlgEmpleados extends javax.swing.JDialog {
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 721, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel6)
+                            .addComponent(cbxPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -140,29 +146,29 @@ public class DlgEmpleados extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(cbxPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -180,45 +186,48 @@ public class DlgEmpleados extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        String identificacion = txtIdentificacion.getText();
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                DlgEmpleados dialog = new DlgEmpleados(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+        String nombre = txtNombre.getText();
+
+        String telefono = txtTelefono.getText();
+
+        PuestoEmpleado puesto = PuestoEmpleado.valueOf(cbxPuesto.getSelectedItem().toString());
+       
+        if (empleadoActual == null) {
+            Empleado empleado = new Empleado(identificacion, nombre, telefono, puesto);
+            controlador.agregarEmpleado(empleado);
+        } else {
+            empleadoActual.setTelefono(telefono);
+            empleadoActual.setPuesto(puesto);
+        }
+        dispose();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void cbxPuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPuestoActionPerformed
+        PuestoEmpleado puesto = PuestoEmpleado.valueOf(cbxPuesto.getSelectedItem().toString());
+        txtSalario.setText(String.valueOf(puesto.getSalario()));
+    }//GEN-LAST:event_cbxPuestoActionPerformed
+    
+    public void cargarEmpleado(Empleado empleado){
+
+        empleadoActual = empleado;
+
+        txtIdentificacion.setText(empleado.getIdentificacion());
+
+        txtNombre.setText(empleado.getNombre());
+
+        txtTelefono.setText(empleado.getTelefono());
+
+        cbxPuesto.setSelectedItem(empleado.getPuesto().toString());
+
+        txtSalario.setText(String.valueOf(empleado.getSalario()));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cbxPuesto;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -228,10 +237,9 @@ public class DlgEmpleados extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txtIdentificacion;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSalario;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
