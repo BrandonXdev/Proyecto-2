@@ -4,6 +4,12 @@
  */
 package Vista;
 
+import Controlador.Controlador;
+import Modelo.CambioEstadoException;
+import Modelo.Contrato;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author brand
@@ -12,11 +18,10 @@ public class FrmContratos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmContratos.class.getName());
 
-    /**
-     * Creates new form FrmContratos
-     */
-    public FrmContratos() {
+    private Controlador controlador;
+    public FrmContratos(Controlador controlador) {
         initComponents();
+        this.controlador = controlador;
     }
 
     /**
@@ -30,16 +35,16 @@ public class FrmContratos extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnActivar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblContratos = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         jButton6 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnFinalizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,36 +56,40 @@ public class FrmContratos extends javax.swing.JFrame {
         jLabel1.setText("Gestión de contratos");
         jLabel1.setOpaque(true);
 
-        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        txtBuscar.setBackground(new java.awt.Color(102, 102, 102));
+        txtBuscar.setForeground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 0));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Buscar-Photoroom.png"))); // NOI18N
-        jButton1.setText("Buscar");
+        btnBuscar.setBackground(new java.awt.Color(255, 204, 0));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Buscar-Photoroom.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 0));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Agregar.png"))); // NOI18N
-        jButton2.setText("Agregar");
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar.setBackground(new java.awt.Color(255, 204, 0));
+        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Agregar.png"))); // NOI18N
+        btnAgregar.setText("Agregar");
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
-        jButton3.setBackground(java.awt.Color.green);
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Activar-Photoroom.png"))); // NOI18N
-        jButton3.setText("Activar");
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnActivar.setBackground(java.awt.Color.green);
+        btnActivar.setForeground(new java.awt.Color(0, 0, 0));
+        btnActivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Activar-Photoroom.png"))); // NOI18N
+        btnActivar.setText("Activar");
+        btnActivar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnActivar.addActionListener(this::btnActivarActionPerformed);
 
-        jButton4.setBackground(java.awt.Color.red);
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eliminar.png"))); // NOI18N
-        jButton4.setText("Cancelar Contrato");
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnCancelar.setBackground(java.awt.Color.red);
+        btnCancelar.setForeground(new java.awt.Color(0, 0, 0));
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eliminar.png"))); // NOI18N
+        btnCancelar.setText("Cancelar Contrato");
+        btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         jScrollPane1.setBackground(new java.awt.Color(0, 0, 153));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblContratos.setBackground(new java.awt.Color(255, 255, 255));
+        tblContratos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -91,7 +100,7 @@ public class FrmContratos extends javax.swing.JFrame {
                 "N° Contrato", "Cliente", "Espacio", "Inicio", "Fin", "Estado"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblContratos);
 
         jButton6.setBackground(java.awt.Color.red);
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
@@ -99,11 +108,12 @@ public class FrmContratos extends javax.swing.JFrame {
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
-        jButton5.setBackground(java.awt.Color.blue);
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Finalizar-Photoroom.png"))); // NOI18N
-        jButton5.setText("Finalizar");
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnFinalizar.setBackground(java.awt.Color.blue);
+        btnFinalizar.setForeground(new java.awt.Color(0, 0, 0));
+        btnFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Finalizar-Photoroom.png"))); // NOI18N
+        btnFinalizar.setText("Finalizar");
+        btnFinalizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnFinalizar.addActionListener(this::btnFinalizarActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -115,17 +125,17 @@ public class FrmContratos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
+                        .addComponent(btnActivar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton5)
+                        .addComponent(btnFinalizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
+                        .addComponent(btnCancelar))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(11, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -139,16 +149,16 @@ public class FrmContratos extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                    .addComponent(txtBuscar)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActivar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -174,9 +184,88 @@ public class FrmContratos extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        DlgContrato dlg = new DlgContrato(this, true, controlador);
+        dlg.setVisible(true);
+        cargarContratos();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        int numero = Integer.parseInt(txtBuscar.getText());
+
+        Contrato contrato = controlador.buscarContrato(numero);
+        if (contrato != null) {
+            JOptionPane.showMessageDialog(this, "Contrato: " + contrato.getNumeroContrato()
+            + "\nCliente: " + contrato.getCliente().getNombre() + "\nEstado: "
+            + contrato.getEstado());
+        } else {
+            JOptionPane.showMessageDialog(this,"Contrato no encontrado");
+}
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarActionPerformed
+
+        int fila = tblContratos.getSelectedRow();
+    
+        int numero = Integer.parseInt(tblContratos.getValueAt(fila, 0).toString());
+        try {
+            controlador.activarContrato(numero);
+            cargarContratos();
+
+    } catch (CambioEstadoException e) {
+
+        JOptionPane.showMessageDialog(this,e.getMessage());
+    }
+
+    }//GEN-LAST:event_btnActivarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        
+        int fila = tblContratos.getSelectedRow();
+        
+        int numero =Integer.parseInt(tblContratos.getValueAt(fila, 0).toString());
+
+        try {
+            controlador.cancelarContrato(numero);
+            cargarContratos();
+
+    } catch (CambioEstadoException e) {
+        JOptionPane.showMessageDialog(this,e.getMessage());
+    }
+
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+    
+        int fila = tblContratos.getSelectedRow();
+
+        int numero =Integer.parseInt(tblContratos.getValueAt(fila, 0).toString());
+        try {
+            controlador.finalizarContrato(numero);
+            cargarContratos();
+        
+        } catch (CambioEstadoException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage()); 
+}
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
+    private void cargarContratos() {
+        DefaultTableModel modelo = (DefaultTableModel) tblContratos.getModel();
+
+        modelo.setRowCount(0);
+
+        for (Contrato contrato : controlador.getContratos().getContratos()) {
+            modelo.addRow(new Object[]{
+            contrato.getNumeroContrato(),
+            contrato.getCliente().getNombre(),
+            contrato.getEspacio().getNumeroEspacio(),
+            contrato.getFechaInicio(),
+            contrato.getFechaFinal(),
+            contrato.getEstado()
+            });
+}
+    
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -196,21 +285,21 @@ public class FrmContratos extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmContratos().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new FrmContratos().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnActivar;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblContratos;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

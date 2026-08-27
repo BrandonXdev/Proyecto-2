@@ -23,6 +23,7 @@ public class DlgCliente extends javax.swing.JDialog {
         initComponents();
         this.controlador = controlador;
         
+        
     }
 
     /**
