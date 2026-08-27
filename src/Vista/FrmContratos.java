@@ -22,6 +22,7 @@ public class FrmContratos extends javax.swing.JFrame {
     public FrmContratos(Controlador controlador) {
         initComponents();
         this.controlador = controlador;
+        cargarContratos();
     }
 
     /**

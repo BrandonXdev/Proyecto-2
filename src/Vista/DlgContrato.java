@@ -125,6 +125,7 @@ public class DlgContrato extends javax.swing.JDialog {
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
         jButton6.setText("Cancelar");
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         btnGuardar.setBackground(new java.awt.Color(255, 204, 0));
         btnGuardar.setForeground(new java.awt.Color(0, 0, 0));
@@ -227,12 +228,11 @@ public class DlgContrato extends javax.swing.JDialog {
         jPanelCostosLayout.setHorizontalGroup(
             jPanelCostosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCostosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanelCostosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelCostosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblSubtotal1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE))
-                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblImpuestos, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))
+                    .addComponent(lblSubtotal1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                    .addComponent(lblImpuestos, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelCostosLayout.setVerticalGroup(
@@ -240,9 +240,9 @@ public class DlgContrato extends javax.swing.JDialog {
             .addGroup(jPanelCostosLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(lblSubtotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(36, 36, 36)
                 .addComponent(lblImpuestos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
@@ -402,7 +402,7 @@ public class DlgContrato extends javax.swing.JDialog {
         LocalDate fechaFinal = fechaFinalDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         
         Espacio espacio = obtenerEspacioSeleccionado();
-        Contrato contrato =new Contrato(clienteSeleccionado, espacio, fechaInicio, fechaFinal,
+        Contrato contrato = new Contrato(clienteSeleccionado, espacio, fechaInicio, fechaFinal,
                 controlador.generarNumeroContrato());
         controlador.agregarContrato(contrato);
         dispose();
@@ -435,6 +435,10 @@ public class DlgContrato extends javax.swing.JDialog {
         lblTotal.setText("Total: ₡" + total);
 
     }//GEN-LAST:event_btnCalcularCostosActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
     
     private Espacio obtenerEspacioSeleccionado() {
         int numero = Integer.parseInt(cbxEspacio.getSelectedItem().toString());
