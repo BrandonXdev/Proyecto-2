@@ -105,7 +105,7 @@ public class FrmClientes extends javax.swing.JFrame {
 
         jButton6.setBackground(java.awt.Color.red);
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Salir");
+        jButton6.setText("Volver ");
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton6.addActionListener(this::jButton6ActionPerformed);
 

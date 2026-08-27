@@ -17,6 +17,8 @@ import Modelo.EmpleadosList;
 import Modelo.GestorContratos;
 import Modelo.Servicio;
 import Modelo.ServiciosList;
+import Modelo.Espacio;
+import Modelo.EspaciosList;
 
 public class Controlador {
     
@@ -24,12 +26,14 @@ public class Controlador {
     private EmpleadosList empleados;
     private ServiciosList servicios; 
     private GestorContratos contratos;
+    private EspaciosList espacios;
 
     public Controlador() {
         this.clientes = new ClientesList();
         this.empleados = new EmpleadosList();
         this.servicios = new ServiciosList();
         this.contratos = new GestorContratos();
+        this.espacios = new EspaciosList();
     }
     
     //Clientes:
@@ -96,5 +100,20 @@ public class Controlador {
     public GestorContratos getContratos() {
         return contratos;
     }
+    
+    //Espacios: 
+    public boolean agregarEspacio(Espacio espacio) {
+        return espacios.add(espacio);
+    }
+    public Espacio buscarEspacio(int numeroEspacio) {
+        return espacios.get(numeroEspacio);
+    }
+    public boolean eliminarEspacio(int numeroEspacio) {
+        return espacios.remove(numeroEspacio);
+    }
+    public EspaciosList getEspacios() {
+        return espacios;
+    }
+    
 
 }
