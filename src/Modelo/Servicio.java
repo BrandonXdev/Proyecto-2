@@ -39,7 +39,7 @@ public class Servicio {
     }
 
     public Servicio(String nombre, String descripcion, double precio) {
-        this.codigo = "Servicio "+ String.valueOf(System.currentTimeMillis()).substring(8);
+        this.codigo = String.valueOf(System.currentTimeMillis()).substring(8);
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
