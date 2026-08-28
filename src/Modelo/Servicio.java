@@ -13,6 +13,7 @@ public class Servicio {
     private String nombre;
     private String descripcion;
     private double precio;
+   
 
     public String getCodigo() {
         return codigo;
@@ -37,6 +38,11 @@ public class Servicio {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
 
     public Servicio(String nombre, String descripcion, double precio) {
         this.codigo = String.valueOf(System.currentTimeMillis()).substring(8);
