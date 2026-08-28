@@ -107,6 +107,7 @@ public class Contrato {
             throw new CambioEstadoException("Solo se pueden activar contratos pendientes");
             }
         estado = EstadoContrato.ACTIVO;
+        espacio.setDisponible(false);
         }
     
     public void finalizar() throws CambioEstadoException {
@@ -114,6 +115,7 @@ public class Contrato {
              throw new CambioEstadoException("Solo se pueden finalizar contratos activos");
             }
         estado = EstadoContrato.FINALIZADO;
+        espacio.setDisponible(false);
         
         }
     
@@ -122,6 +124,7 @@ public class Contrato {
              throw new CambioEstadoException("Solo se pueden cancelar contratos pendientes");
             }
         estado = EstadoContrato.CANCELADO;
+        espacio.setDisponible(true);
         }
     
     public double calcularTotal(){

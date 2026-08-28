@@ -77,6 +77,9 @@ public class Controlador {
     public ServiciosList getServicios() {
         return servicios;
     }
+    public Servicio buscarServicioPorNombre(String nombre) {
+        return servicios.buscarPorNombre(nombre);
+    }
     
     //Contratos: 
     public void agregarContrato(Contrato contrato) {

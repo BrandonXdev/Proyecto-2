@@ -8,8 +8,12 @@ import Controlador.Controlador;
 import Modelo.Cliente;
 import Modelo.Contrato;
 import Modelo.Espacio;
+import Modelo.EspacioOcupadoExepction;
+import Modelo.Servicio;
 import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.Locale;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,14 +40,25 @@ public class DlgContrato extends javax.swing.JDialog {
     }
 
     private void calcularDuracion() {
-        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
+
+        if (jDateChooser1.getDate() == null ||
+            jDateChooser2.getDate() == null) {
             return;
         }
+
         long dias = (jDateChooser2.getDate().getTime() - jDateChooser1.getDate().getTime())
-        / (1000 * 60 * 60 * 24);
-        lblDuracion.setText(
-        "Duración: " + dias + " días");
-        
+                / (1000 * 60 * 60 * 24);
+
+        int periodos;
+
+        if (dias % 30 == 0) {
+            periodos = (int) (dias / 30);
+    } else {
+        periodos = (int) (dias / 30) + 1;
+    }
+
+    lblDuracion.setText(
+            "Días: " + dias + " | Períodos: " + periodos);
 }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -111,6 +126,7 @@ public class DlgContrato extends javax.swing.JDialog {
         jDateChooser1.setBackground(new java.awt.Color(204, 204, 204));
         jDateChooser1.setForeground(new java.awt.Color(0, 0, 153));
         jDateChooser1.setOpaque(false);
+        jDateChooser1.addPropertyChangeListener(this::jDateChooser1PropertyChange);
 
         jLabel7.setBackground(new java.awt.Color(204, 204, 204));
         jLabel7.setForeground(java.awt.Color.red);
@@ -150,6 +166,7 @@ public class DlgContrato extends javax.swing.JDialog {
         jDateChooser2.setBackground(new java.awt.Color(204, 204, 204));
         jDateChooser2.setForeground(new java.awt.Color(0, 0, 153));
         jDateChooser2.setOpaque(false);
+        jDateChooser2.addPropertyChangeListener(this::jDateChooser2PropertyChange);
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(153, 153, 153));
@@ -401,7 +418,23 @@ public class DlgContrato extends javax.swing.JDialog {
         LocalDate fechaInicio = fechaInicioDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         LocalDate fechaFinal = fechaFinalDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         
+        if (!fechaFinal.isAfter(fechaInicio)) {
+            JOptionPane.showMessageDialog(this,"La fecha final debe ser posterior a la fecha inicial");
+            return;
+        }
+        
         Espacio espacio = obtenerEspacioSeleccionado();
+        
+        try {
+            if (!espacio.isDisponible()) {
+                    throw new EspacioOcupadoExepction("El espacio seleccionado se encuentra ocupado");
+                
+            }
+        } catch (EspacioOcupadoExepction e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            return;
+        }
+        
         Contrato contrato = new Contrato(clienteSeleccionado, espacio, fechaInicio, fechaFinal,
                 controlador.generarNumeroContrato());
         controlador.agregarContrato(contrato);
@@ -411,34 +444,57 @@ public class DlgContrato extends javax.swing.JDialog {
 
     private void btnCalcularCostosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularCostosActionPerformed
         
+        Espacio espacio = obtenerEspacioSeleccionado();
 
-        double subtotal = 0;
+        LocalDate fechaInicio = jDateChooser1.getDate().toInstant().atZone(java.time.ZoneId.systemDefault())
+        .toLocalDate();
 
+        LocalDate fechaFinal = jDateChooser2.getDate().toInstant().atZone(java.time.ZoneId.systemDefault())
+        .toLocalDate();
+        
+        Contrato contrato = new Contrato(clienteSeleccionado, espacio, fechaInicio,fechaFinal,0);
+        
         if (checkSeguro.isSelected()) {
-        subtotal += 5000;
+            Servicio servicio = controlador.buscarServicioPorNombre("Seguro");
+            
+        if (servicio != null) {
+            contrato.agregarServicio(servicio);
     }
-
+}
         if (checkTransporte.isSelected()) {
-        subtotal += 10000;
-    }
+            Servicio servicio = controlador.buscarServicioPorNombre("Transporte");
 
+        if (servicio != null) {
+            contrato.agregarServicio(servicio);
+    }
+}
         if (checkEmbalaje.isSelected()) {
-        subtotal += 8000;
+            Servicio servicio = controlador.buscarServicioPorNombre("Embalaje");
+
+        if (servicio != null) {
+            contrato.agregarServicio(servicio);
     }
+}
 
-        double impuestos = subtotal * 0.13;
+        lblSubtotal1.setText(String.format("Subtotal: ₡%.2f", contrato.calcularSubtotal()));
 
-        double total = subtotal + impuestos;
+        lblImpuestos.setText(String.format("Impuestos: ₡%.2f", contrato.calcularImpuesto()));
 
-        lblSubtotal1.setText("Subtotal: ₡" + subtotal);
-        lblImpuestos.setText("Impuestos: ₡" + impuestos);
-        lblTotal.setText("Total: ₡" + total);
+        lblTotal.setText(String.format("Total: ₡%.2f", contrato.calcularTotal()));
 
     }//GEN-LAST:event_btnCalcularCostosActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        calcularDuracion();
+    }//GEN-LAST:event_jDateChooser1PropertyChange
+
+    private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
+        calcularDuracion();
+    }//GEN-LAST:event_jDateChooser2PropertyChange
     
     private Espacio obtenerEspacioSeleccionado() {
         int numero = Integer.parseInt(cbxEspacio.getSelectedItem().toString());

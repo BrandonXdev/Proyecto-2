@@ -48,4 +48,18 @@ public class ServiciosList implements KeyDynamicList<Servicio, String>{
     public boolean isEmpty() {
         return servicio.isEmpty();
     }
+    
+    public Servicio buscarPorNombre(String nombre) {
+
+    Iterator servicios = getAll();
+
+    while (servicios != null && servicios.hasNext()) {
+        Servicio servicio = (Servicio) servicios.next();
+        if (servicio.getNombre().equalsIgnoreCase(nombre)) {
+            return servicio;
+        }
+    }
+
+    return null;
+}
 }

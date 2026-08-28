@@ -211,9 +211,23 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
-        String puestoSeleccionado = cbxPuesto.getSelectedItem().toString(); // arreglar
+        String puestoSeleccionado = cbxPuesto.getSelectedItem().toString();
 
-        JOptionPane.showMessageDialog(this, "Puesto seleccionado: " + puestoSeleccionado);
+        Iterator empleados = controlador.getEmpleados().getAll();
+
+        String resultado = "";
+
+        while (empleados != null && empleados.hasNext()) {
+            Empleado empleado = (Empleado) empleados.next();
+
+        if (empleado.getPuesto().toString().equals(puestoSeleccionado)) {
+            resultado += empleado.getNombre() + "\n";
+        }
+    }
+        JOptionPane.showMessageDialog(this, "Empleados encontrados:\n"
+                + "\n"
+                + resultado);
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
      private void cargarEmpleados() {

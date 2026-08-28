@@ -97,8 +97,9 @@ public class DlgEspacio extends javax.swing.JDialog {
 
         jButton6.setBackground(java.awt.Color.red);
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Cancelar");
+        jButton6.setText("Volver");
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         cbxTipo.setBackground(new java.awt.Color(204, 204, 204));
         cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PEQUENO", "MEDIANO", "GRANDE" }));
@@ -193,8 +194,7 @@ public class DlgEspacio extends javax.swing.JDialog {
     }//GEN-LAST:event_cbxTipoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        int numero =
-        Integer.parseInt(txtNumeroEspacio.getText());
+        int numero = Integer.parseInt(txtNumeroEspacio.getText());
 
         TipoEspacio tipo = TipoEspacio.valueOf(cbxTipo.getSelectedItem().toString());
 
@@ -208,6 +208,10 @@ public class DlgEspacio extends javax.swing.JDialog {
 
 }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
     
     public void cargarEspacio(Espacio espacio){
 

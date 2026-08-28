@@ -7,6 +7,7 @@ package Vista;
 import Controlador.Controlador;
 import Modelo.Cliente;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -117,6 +118,7 @@ public class DlgCliente extends javax.swing.JDialog {
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
         jButton6.setText("Cancelar");
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,25 +203,43 @@ public class DlgCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        
         String identificacion = txtIdentificacion.getText();
         String nombre = txtNombre.getText();
         int telefono = Integer.parseInt(txtTelefono.getText());
         String correo = txtCorreoElectronico.getText();
+
         java.util.Date fecha = txtDateChooser.getDate();
+
         LocalDate fechaNacimiento = fecha.toInstant().atZone(java.time.ZoneId.systemDefault())
                 .toLocalDate();
+
         if (clienteActual == null) {
-            Cliente cliente = new Cliente(identificacion, nombre,
-                fechaNacimiento, telefono, correo);
-            controlador.agregarCliente(cliente);
-        }else{
+            Cliente cliente = new Cliente(identificacion, nombre,fechaNacimiento,
+                    telefono, correo);
+
+        boolean agregado = controlador.agregarCliente(cliente);
+
+        if (agregado) {
+            JOptionPane.showMessageDialog(this, "Cliente agregado correctamente");
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,"Ya existe un cliente con esa identificación");
+        }
+        } else {
             clienteActual.setNombre(nombre);
             clienteActual.setNumeroTelefono(telefono);
-            clienteActual.setCorreo(correo);     
-        }
-        dispose();
-     
+            clienteActual.setCorreo(correo);
+            JOptionPane.showMessageDialog(this,"Cliente actualizado correctamente");
+            dispose();
+    }
+
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
     
     public void cargarCliente(Cliente cliente){
         clienteActual = cliente;

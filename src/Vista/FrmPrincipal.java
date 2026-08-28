@@ -5,6 +5,7 @@
 package Vista;
 
 import Controlador.Controlador;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,6 +64,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Salirl-Photoroom.png"))); // NOI18N
         jButton6.setBorderPainted(false);
         jButton6.setContentAreaFilled(false);
+        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton6.addActionListener(this::jButton6ActionPerformed);
         jPanelPrincipal.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 700, -1, -1));
 
@@ -234,7 +236,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(this, "Desea salir del sistema", 
+                "confirmar salida", JOptionPane.YES_NO_OPTION);
+        if (resp == JOptionPane.YES_NO_OPTION) {
+            System.exit(0);
+        }
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
